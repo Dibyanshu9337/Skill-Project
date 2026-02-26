@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mental Health AI Assistant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: white;
+    width: 90%;
+    max-width: 700px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: none;
+    transition: 0.3s;
+}
+
+textarea:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 10px rgba(102,126,234,0.4);
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.result-box {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.positive {
+    background-color: #e6ffed;
+    color: #0f5132;
+}
+
+.negative {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.highrisk {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.suggestion {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f4f6f9;
+}
+
+.analytics {
+    margin-top: 30px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #f4f6f9;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🧠 Mental Health AI Assistant</h1>
+
+<form method="POST" onsubmit="showLoader()">
+    <textarea name="user_input" placeholder="How are you feeling today?" required></textarea>
+    <button type="submit">Analyze</button>
+</form>
+
+<div id="loader" style="display:none; margin-top:15px;">
+    ⏳ Analyzing...
+</div>
+
+{% if prediction %}
+<div class="result-box 
+{% if prediction == 'Positive' %}positive
+{% elif prediction == 'Negative' %}negative
+{% else %}highrisk{% endif %}">
+    <h2>Prediction: {{ prediction }}</h2>
+</div>
+{% endif %}
+
+{% if suggestion %}
+<div class="suggestion">
+    <h3>💡 Support Suggestion</h3>
+    <p>{{ suggestion }}</p>
+</div>
+{% endif %}
+
+<div class="analytics">
+{% if chart %}
+<h3>📊 Analytics</h3>
+<img src="data:image/png;base64,{{ chart }}" width="100%">
+{% endif %}
+
+{% if history %}
+<h3>📋 Last 10 Predictions</h3>
+<ul>
+{% for item in history %}
+<li>{{ item }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+
+</div>
+
+<script>
+function showLoader() {
+    document.getElementById("loader").style.display = "block";
+}
+</script>
+
+</body>
+</html>
