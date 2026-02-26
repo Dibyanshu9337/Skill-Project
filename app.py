@@ -6,7 +6,7 @@ import io
 import base64
 from ai_suggestion import get_ai_suggestion
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".")
 
 model = pickle.load(open("model.pkl", "rb"))
 
